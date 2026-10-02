@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Пахомов Игнат — AI-разработчик</title>
+
+  <!-- ============================================================
+       CSS — ВСЁ ОФОРМЛЕНИЕ ЗДЕСЬ, ВНУТРИ ТЕГА <style>
+       ============================================================ -->
+  <style>
+    /* --- Переменные для светлой темы (по умолчанию) --- */
+    :root {
+      --bg: #f5f6fa;
+      --card: #ffffff;
+      --text: #1a1a2e;
+      --text-muted: #5a5a70;
+      --accent: #6c5ce7;
+      --accent-2: #00cec9;
+      --border: rgba(0, 0, 0, 0.08);
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+    }
+
+    /* --- Переменные для тёмной темы --- */
+    body.dark {
+      --bg: #0a0a0f;
+      --card: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --text-muted: #a0a0b8;
+      --accent: #a29bfe;
+      --accent-2: #00cec9;
+      --border: rgba(255, 255, 255, 0.1);
+      --shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* --- Базовые стили --- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      transition: background 0.4s, color 0.4s;
+    }
+
+    /* --- Кнопка темы (фиксированная вверху справа) --- */
+    .theme-toggle {
+      position: fixed;
+      top: 1.2rem;
+      right: 1.2rem;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--text);
+      font-size: 1.4rem;
+      cursor: pointer;
+      z-index: 100;
+      box-shadow: var(--shadow);
+      transition: transform 0.3s, background 0.4s;
+      backdrop-filter: blur(10px);
+    }
+
+    .theme-toggle:hover {
+      transform: rotate(20deg) scale(1.1);
+    }
+
+    /* --- Первый экран --- */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Светящиеся пятна на фоне */
+    .hero::before,
+    .hero::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(90px);
+      opacity: 0.35;
+      z-index: 0;
+    }
+
+    .hero::before {
+      width: 350px;
+      height: 350px;
+      background: var(--accent);
+      top: -100px;
+      left: -100px;
+    }
+
+    .hero::after {
+      width: 300px;
+      height: 300px;
+      background: var(--accent-2);
+      bottom: -80px;
+      right: -80px;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-greeting {
+      font-size: 1rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s ease forwards;
+    }
+
+    .hero-name {
+      font-size: clamp(2.3rem, 8vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: fadeUp 0.8s ease 0.15s both;
+    }
+
+    .hero-tagline {
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 1rem;
+      animation: fadeUp 0.8s ease 0.3s both;
+    }
+
+    .hero-text {
+      font-size: 1rem;
+      color: var(--text-muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+      animation: fadeUp 0.8s ease 0.45s both;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+
+    /* --- Кнопки --- */
+    .btn {
+      display: inline-block;
+      padding: 0.85rem 2rem;
+      border-radius: 50px;
+      font-size: 1rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(108, 92, 231, 0.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(108, 92, 231, 0.5);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--text);
+      border: 2px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      border-color: var(--accent-2);
+      color: var(--accent-2);
+      transform: translateY(-3px);
+    }
+
+    /* --- Секции --- */
+    section {
+      padding: 5rem 1.5rem;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .section-title {
+      font-size: clamp(1.6rem, 5vw, 2.2rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    .section-title span {
+      color: var(--accent-2);
+    }
+
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto 2.5rem;
+    }
+
+    /* --- Сетка карточек --- */
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2rem 1.6rem;
+      text-align: center;
+      transition: transform 0.3s, border-color 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(10px);
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: var(--accent-2);
+      box-shadow: var(--shadow);
+    }
+
+    .card-icon {
+      font-size: 2.6rem;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    /* --- Блок "Обо мне" --- */
+    .about-box {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 2.5rem 2rem;
+      text-align: center;
+      max-width: 750px;
+      margin: 0 auto;
+      backdrop-filter: blur(10px);
+    }
+
+    .about-box p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    .about-box p + p {
+      margin-top: 1rem;
+    }
+
+    /* --- Контакты --- */
+    .contact-links {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    /* --- Анимация появления --- */
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Плавное появление секций при прокрутке */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.active {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* --- Подвал --- */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      border-top: 1px solid var(--border);
+    }
+
+    /* --- Адаптив для телефона --- */
+    @media (max-width: 600px) {
+      section {
+        padding: 3.5rem 1.2rem;
+      }
+
+      .hero-buttons {
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+      }
+
+      .theme-toggle {
+        width: 44px;
+        height: 44px;
+        font-size: 1.2rem;
+        top: 1rem;
+        right: 1rem;
+      }
+
+      .about-box {
+        padding: 1.8rem 1.4rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+       HTML — ВСЯ СТРУКТУРА СТРАНИЦЫ ЗДЕСЬ, ВНУТРИ ТЕГА <body>
+       ============================================================ -->
+
+  <!-- Кнопка переключения темы -->
+  <button class="theme-toggle" id="themeToggle" title="Переключить тему">🌙</button>
+
+  <!-- ====== 1. ПЕРВЫЙ ЭКРАН ====== -->
+  <header class="hero">
+    <div class="hero-content">
+      <p class="hero-greeting">Привет, меня зовут</p>
+      <h1 class="hero-name">Пахомов Игнат</h1>
+      <p class="hero-tagline">Начинающий AI-разработчик</p>
+      <p class="hero-text">
+        Я только начинаю свой путь в программировании. Мне интересно
+        создавать сайты, ботов и AI-приложения, которые делают жизнь удобнее.
+      </p>
+      <div class="hero-buttons">
+        <!-- 10. Кнопка "Мои проекты" — прокручивает к блоку проектов -->
+        <a href="#projects" class="btn btn-primary">Мои проекты</a>
+        <a href="#contacts" class="btn btn-outline">Связаться</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ====== 5. БЛОК "ОБО МНЕ" ====== -->
+  <section id="about" class="reveal">
+    <h2 class="section-title">Обо <span>мне</span></h2>
+    <div class="about-box">
+      <p>
+        Меня зовут Игнат мне 17, я начинающий AI-разработчик. Сейчас я изучаю
+        основы веб-разработки и искусственного интеллекта.
+      </p>
+      <p>
+        Мне нравится разбираться в новых технологиях и превращать идеи
+        в работающие проекты. Этот сайт — моя первая практическая работа.
+      </p>
+    </div>
+  </section>
+
+  <!-- ====== 6. БЛОК "ЧТО Я ХОЧУ НАУЧИТЬСЯ СОЗДАВАТЬ" ====== -->
+  <section id="goals" class="reveal">
+    <h2 class="section-title">Что я хочу <span>научиться создавать</span></h2>
+    <p class="section-subtitle">
+      Вот три направления, в которых я хочу развиваться.
+    </p>
+
+    <!-- 7. ТРИ КАРТОЧКИ -->
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🌐</span>
+        <h3>Сайты</h3>
+        <p>Современные, удобные и адаптивные веб-страницы.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🎮</span>
+        <h3>Игры</h3>
+        <p>Интересные и затягивающие игры.</p>
+      </div>
+      <div class="card">
+        <span class="card-icon">🧠</span>
+        <h3>AI-приложения</h3>
+        <p>Умные сервисы с использованием искусственного интеллекта.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 8. БЛОК "МОИ ПРОЕКТЫ" ====== -->
+  <section id="projects" class="reveal">
+    <h2 class="section-title">Мои <span>проекты</span></h2>
+    <p class="section-subtitle">
+      Пока здесь только один проект, но это только начало!
+    </p>
+
+    <div class="cards">
+      <div class="card">
+        <span class="card-icon">🚀</span>
+        <h3>Мой первый сайт</h3>
+        <p>
+          Персональный одностраничный сайт, созданный с нуля на HTML, CSS
+          и JavaScript.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== 9. БЛОК КОНТАКТОВ ====== -->
+  <section id="contacts" class="reveal">
+    <h2 class="section-title">Мои <span>контакты</span></h2>
+    <p class="section-subtitle">
+      Буду рад обратной связи и новым знакомствам!
+    </p>
+    <div class="contact-links">
+      <a href="mailto:wan612273@gmail.com" class="btn btn-primary">✉️ Написать</a>
+      <a href="https://t.me/mista0west/" target="_blank" class="btn btn-outline">💬 Telegram</a>
+      <a href="https://github.com/" target="_blank" class="btn btn-outline">🐙 GitHub</a>
+    </div>
+  </section>
+
+  <!-- Подвал -->
+  <footer>
+    © 2025 Пахомов Игнат.👀
+  </footer>
+
+  <!-- ============================================================
+       JAVASCRIPT — ВСЯ ЛОГИКА ЗДЕСЬ, ВНУТРИ ТЕГА <script>
+       ============================================================ -->
+  <script>
+    // --- 11. ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ---
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Проверяем, сохранил ли пользователь тему раньше
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+      themeToggle.textContent = '☀️';
+    } else {
+      themeToggle.textContent = '🌙';
+    }
+
+    themeToggle.addEventListener('click', function () {
+      document.body.classList.toggle('dark');
+
+      if (document.body.classList.contains('dark')) {
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('theme', 'dark');
+      } else {
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('theme', 'light');
+      }
+    });
+
+    // --- ПЛАВНОЕ ПОЯВЛЕНИЕ СЕКЦИЙ ПРИ ПРОКРУТКЕ ---
+    const revealElements = document.querySelectorAll('.reveal');
+
+    function checkReveal() {
+      const windowHeight = window.innerHeight;
+      revealElements.forEach(function (el) {
+        const top = el.getBoundingClientRect().top;
+        if (top < windowHeight - 100) {
+          el.classList.add('active');
+        }
+      });
+    }
+
+    window.addEventListener('scroll', checkReveal);
+    window.addEventListener('load', checkReveal);
+  </script>
+
+</body>
+</html>
