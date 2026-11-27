@@ -42,7 +42,7 @@
 
 
 
-\*\*Ссылка:\*\*
+\*\*Ссылка на сайт:\*\*
 
-\[Мой сайт](https://mista1west.github.io/gbuyugygybuy/)
+\(https://mista1west.github.io/gbuyugygybuy/)
 
